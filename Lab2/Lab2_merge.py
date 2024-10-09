@@ -176,6 +176,7 @@ def build_tree(data, max_depth, min_samples_split, depth):
   """
   ### START CODE HERE ###
   # check the condition of current depth and the remaining number of samples
+  print(f"depth: {depth}, remaining samples: {data.shape[0]}")
   if depth < max_depth and data.shape[0] > min_samples_split:
     # call find_best_split() to find the best combination
     ig, threshold, feature = find_best_split(data, 'basic')
@@ -349,7 +350,7 @@ advanced_testing_data = pd.read_csv('lab2_advanced_testing.csv')
 advanced_testing_data
 ### START CODE HERE ###
 training_data = advanced_training_data
-validation_data = ...
+# validation_data = ...
 ### END CODE HERE ###
 ### START CODE HERE ###
 # Define the attributes
@@ -361,7 +362,7 @@ min_samples_split = 5
 n_trees = 500
 
 # number of features to train a decision tree
-n_features = 25
+n_features = 10
 
 # the ratio to select the number of instances
 sample_size = 0.7
@@ -387,7 +388,7 @@ def build_forest(data, n_trees, n_features, n_samples):
   # Create 'n_trees' number of trees and store each into the 'forest' list
   for i in range(n_trees):
     
-    print(f"Building tree {i+1} out of {n_trees}")
+    print("Building tree {} out of {}".format(i + 1, n_trees))
 
     ### START CODE HERE ###
     # Select 'n_samples' number of samples and 'n_features' number of features
@@ -414,7 +415,7 @@ def build_forest(data, n_trees, n_features, n_samples):
     # Then use the new data and 'build_tree' function to build a tree
     tree = build_tree(tree_data, max_depth, min_samples_split, depth)
     # print(tree)
-    print(f"Tree {i+1} is built")
+    print("Tree {} is built".format(i + 1))
 
     # Save your tree
     forest.append(tree)
