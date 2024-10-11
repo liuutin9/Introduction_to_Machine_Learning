@@ -176,7 +176,7 @@ def build_tree(data, max_depth, min_samples_split, depth):
   """
   ### START CODE HERE ###
   # check the condition of current depth and the remaining number of samples
-  print(f"depth: {depth}, remaining samples: {data.shape[0]}")
+  # print(f"depth: {depth}, remaining samples: {data.shape[0]}")
   if depth < max_depth and data.shape[0] > min_samples_split:
     # call find_best_split() to find the best combination
     ig, threshold, feature = find_best_split(data, 'basic')
@@ -351,23 +351,24 @@ advanced_testing_data
 ### START CODE HERE ###
 training_data = advanced_training_data
 # validation_data = ...
-### END CODE HERE ###
+
 ### START CODE HERE ###
 # Define the attributes
-max_depth = 10
+max_depth = 15
 depth = 0
 min_samples_split = 5
 
 # total number of trees in a random forest
-n_trees = 500
+n_trees = 5
 
 # number of features to train a decision tree
-n_features = 10
+n_features = 20
 
 # the ratio to select the number of instances
 sample_size = 0.7
 n_samples = int(training_data.shape[0] * sample_size)
 ### END CODE HERE ###
+
 def build_forest(data, n_trees, n_features, n_samples):
   """
   This function will build a random forest.
