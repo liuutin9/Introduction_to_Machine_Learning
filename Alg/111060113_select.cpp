@@ -19,10 +19,10 @@ int main() {
 
     if (debug) {
 
-        int totalExecutionTimes = 100;
+        int totalExecutionTimes = 50;
         double averageExecutionTime[5] = {0};
         clock_t start[5], end[5], duration[5];
-        int methods[5] = {0, 0, 5, 7, 9}, Kth[5] = {0};
+        int methods[5] = {0, 3, 5, 7, 9}, Kth[5] = {0};
         int N = 10000000, K;
         int i, j;
 
@@ -71,6 +71,8 @@ int main() {
             std::cout << "======================================" << std::endl;
         }
 
+        std::cout << "Array size: " << N << std::endl;
+        std::cout << "Execution times: " << totalExecutionTimes << std::endl;
         std::cout << "Average time used:" << std::endl;
         std::cout << "Randomized: " << averageExecutionTime[0] << "s." << std::endl;
         for (j = 1; j < 5; j++) {
@@ -83,9 +85,7 @@ int main() {
         int N, K, G;
         std::cin >> N >> K >> G;
         int arr[N], Kth;
-        for (int i = 0; i < N; i++) {
-            std::cin >> arr[i];
-        }
+        for (int i = 0; i < N; i++) std::cin >> arr[i];
         Kth = SelectKthSmallest(arr, 0, N - 1, K, G);
         std::cout << Kth << std::endl;
     }
