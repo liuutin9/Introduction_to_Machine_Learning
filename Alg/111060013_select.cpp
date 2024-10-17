@@ -19,7 +19,7 @@ int main() {
 
     if (debug) {
 
-        int totalExecutionTimes = 100;
+        int totalExecutionTimes = 50;
         double averageExecutionTime[5] = {0};
         clock_t start[5], end[5], duration[5];
         int methods[5] = {0, 3, 5, 7, 9}, Kth[5] = {0};
@@ -42,7 +42,7 @@ int main() {
             for (j = 0; j < 5; j++) {
                 for (i = 0; i < N; i++) arr[i] = sortedArr[i];
                 start[j] = clock();
-                Kth[j] = SelectKthSmallest(arr, 0, N - 1, K, methods[j]);
+                Kth[j] = arr[SelectKthSmallest(arr, 0, N - 1, K, methods[j])];
                 end[j] = clock();
                 duration[j] = end[j] - start[j];
                 averageExecutionTime[j] += (double)duration[j] / CLOCKS_PER_SEC / totalExecutionTimes;
@@ -71,6 +71,8 @@ int main() {
             std::cout << "======================================" << std::endl;
         }
 
+        std::cout << "Array size: " << N << std::endl;
+        std::cout << "Execution times: " << totalExecutionTimes << std::endl;
         std::cout << "Average time used:" << std::endl;
         std::cout << "Randomized: " << averageExecutionTime[0] << "s." << std::endl;
         for (j = 1; j < 5; j++) {
@@ -83,32 +85,39 @@ int main() {
         int N, K, G;
         std::cin >> N >> K >> G;
         int arr[N], Kth;
-        for (int i = 0; i < N; i++) {
-            std::cin >> arr[i];
-        }
+        for (int i = 0; i < N; i++) std::cin >> arr[i];
         Kth = SelectKthSmallest(arr, 0, N - 1, K, G);
-        std::cout << Kth << std::endl;
+        std::cout << arr[Kth] << std::endl;
     }
 
 }
 
 int SelectKthSmallest(int A[], int l, int r, int kth, int numsPerGroup) {
-    int pivotInitPosition, pivotFinalPosition, k;
-    while (true) {
-        pivotInitPosition = (numsPerGroup == 0)
-            ? RandomizedSelectPivot(l, r)
-            : MedianSelectPivot(A, l, r, numsPerGroup);
-        pivotFinalPosition = Partition(A, l, r, pivotInitPosition);
-        k = pivotFinalPosition - l + 1;
-        if (kth == k) {
-            return A[pivotFinalPosition];
-        } else if (kth < k) {
-            r = pivotFinalPosition - 1;
-        } else {
-            l = pivotFinalPosition + 1;
-            kth -= k;
+    int size, numsOfGroup, excess, pivotInitPosition;
+    if (numsPerGroup == 0) {
+        pivotInitPosition = RandomizedSelectPivot(l, r);
+    }
+    else {
+        size = r - l + 1;
+        numsOfGroup = (size) / numsPerGroup;
+        excess = (size) % numsPerGroup;
+        if (excess != 0) numsOfGroup++;
+        if (size <= numsPerGroup) {
+            InsertionSort(A, l, r);
+            pivotInitPosition = l + size / 2;
+        }
+        else {
+            for (int j = l; j <= l + numsOfGroup - 1; j++) {
+                InsertionSortColumn(A, j, r, numsOfGroup);
+            }
+            pivotInitPosition = SelectKthSmallest(A, l + (numsPerGroup / 2) * numsOfGroup, l + (numsPerGroup / 2 + 1) * numsOfGroup - 1, (numsOfGroup % 2 ? numsOfGroup / 2 : numsOfGroup / 2 + 1), numsPerGroup);
         }
     }
+    int pivotFinalPosition = Partition(A, l, r, pivotInitPosition);
+    int k = pivotFinalPosition - l + 1;
+    if (kth == k) return pivotFinalPosition;
+    else if (kth < k) return SelectKthSmallest(A, l, pivotFinalPosition - 1, kth, numsPerGroup);
+    else return SelectKthSmallest(A, pivotFinalPosition + 1, r, kth - k, numsPerGroup);
 }
 
 int RandomizedSelectPivot(int l, int r) {
@@ -116,25 +125,19 @@ int RandomizedSelectPivot(int l, int r) {
 }
 
 int MedianSelectPivot(int A[], int l, int r, int numsPerGroup) {
-    int size, numsOfGroup, excess;
-
-    while (true) {
-        size = r - l + 1;
-        numsOfGroup = (size) / numsPerGroup;
-        excess = (size) % numsPerGroup;
-        if (excess != 0) numsOfGroup++;
-        if (size < numsPerGroup) {
-            InsertionSort(A, l, r);
-            return l + size / 2;
+    int size = r - l + 1;
+    int numsOfGroup = (size) / numsPerGroup;
+    int excess = (size) % numsPerGroup;
+    if (excess != 0) numsOfGroup++;
+    if (size < numsPerGroup) {
+        InsertionSort(A, l, r);
+        return l + size / 2;
+    }
+    else {
+        for (int j = l; j <= l + numsOfGroup - 1; j++) {
+            InsertionSortColumn(A, j, r, numsOfGroup);
         }
-        else {
-            for (int j = l; j <= l + numsOfGroup - 1; j++) {
-                InsertionSortColumn(A, j, r, numsOfGroup);
-            }
-            r = l + (numsPerGroup / 2 + 1) * numsOfGroup - 1;
-            l = l + (numsPerGroup / 2) * numsOfGroup;
-            // return MedianSelectPivot(A, l + (numsPerGroup / 2) * numsOfGroup, l + (numsPerGroup / 2 + 1) * numsOfGroup - 1, numsPerGroup);
-        }
+        return MedianSelectPivot(A, l + (numsPerGroup / 2) * numsOfGroup, l + (numsPerGroup / 2 + 1) * numsOfGroup - 1, numsPerGroup);
     }
 }
 
