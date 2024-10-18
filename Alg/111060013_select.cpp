@@ -14,7 +14,7 @@ int arr[100000000], sortedArr[100000000];
 
 int main() {
 
-    bool debug = true;
+    bool debug = false;
     std::srand(std::time(0));
 
     if (debug) {

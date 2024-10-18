@@ -80,8 +80,8 @@ int main() {
     }
     
     else {
-        int N, K, G;
-        std::cin >> N >> K >> G;
+        int N, K, G = 0;
+        std::cin >> N >> K;
         int arr[N], Kth;
         for (int i = 0; i < N; i++) {
             std::cin >> arr[i];
