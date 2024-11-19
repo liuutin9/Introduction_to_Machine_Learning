@@ -113,6 +113,7 @@ class Activation():
             ### START CODE HERE ###
             Z = self.cache
             dZ = dA * np.where(Z > 0, 1, 0)
+            # Z = dA * np.where(Z >= 0, np.ones(Z.shape), np.zeros(Z.shape))
             ### END CODE HERE ###
 
             assert (dZ.shape == Z.shape)
