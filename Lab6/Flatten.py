@@ -18,7 +18,7 @@ class Flatten():
         self.cache = A_prev.shape
 
         ### START CODE HERE ###
-        A = A_prev.reshape(A_prev.shape[0], self.cache[1] * self.cache[2] * self.cache[3])
+        A = A_prev.reshape(A_prev.shape[0], -1)
         ### END CODE HERE ###
         return A
     
