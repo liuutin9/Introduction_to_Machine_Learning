@@ -1,4 +1,4 @@
-# NTHU 2024 Fall Introduction_to_Machine_Learning
+# NTHU 2024 Fall Introduction to Machine Learning
 ## Course Information
 - Professor: Po-Chih Kuo
 - Average score: --
